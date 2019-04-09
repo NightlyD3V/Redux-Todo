@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { connect } from 'react-redux';
-import { myAction } from './actions';
-import { Todo } from './components/Todo';
+import Todo  from './components/Todo';
 
 class App extends Component {
   render() {

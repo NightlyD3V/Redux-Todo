@@ -1,36 +1,71 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { myAction } from '../actions';
+import { newTodo } from '../actions';
+import { toggle } from '../actions';
 
 class Todo extends React.Component {
     state = {
-        todos: []
+        newItem: '',
+        isCompleted: false,
+    }
+
+    handleChanges = (e) => {
+        e.preventDefault();
+        this.setState({
+            newItem: e.target.value,
+        })
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.newTodo(this.state.newItem);
+        this.setState({ newItem: '' });
+    }
+
+    toggle = (e) => {
+        e.preventDefault();
+        this.props.toggle(e.target.id);
+        console.log('toggled bitch')
     }
 
     render() {
-        console.log(props);
+        //console.log(this.state.newItem);
+        console.log(this.props.toggle);
+        //console.log(this.toggle)
         return (
             <div>
-                <h1>Please add an item</h1>
-                <form>
-                    <input 
-                        type="text" 
-                        placeholder="new item...">
-                    </input>
-                    <button>Enter</button>
-                </form>
+                {this.props.todo.map((todoArray) => {
+                    console.log(todoArray.isCompleted);
+                    return ( 
+                        <h1 id={todoArray.id} onClick={this.toggle} key={todoArray.id}>{todoArray.text}<span>{todoArray.isCompleted.toString()}</span></h1>
+                    )
+                })}
+                <div>
+                    <h1>Please add an item</h1>
+                    <form onSubmit={this.handleSubmit}>
+                        <input 
+                            type="text" 
+                            placeholder="new item..."
+                            name="todo"
+                            value={this.state.newItem}
+                            onChange={this.handleChanges}    
+                        >
+                        </input>
+                        <button>Enter</button>
+                    </form>
+                </div>
             </div>
         )
     }
 }
 const mapStateToProps = state => {
     return {
-      textOnProps: state.todos
+      ...state
     }
   }
   
 export default connect(
     mapStateToProps, 
-    { myAction }
+    { newTodo, toggle }
 )(Todo);
   
